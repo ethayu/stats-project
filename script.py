@@ -6,18 +6,15 @@ import re
 import time
 
 scraper = AutoScraper()
-scraper.build("https://www.vlr.gg/stats/?event_group_id=all&event_id=all&region=all&country=all&min_rounds=200&min_rating=1800&agent=all&map_id=all&timespan=all", ["mwzera", "267.2"])
-data = scraper.get_result_similar("https://www.vlr.gg/stats/?event_group_id=all&event_id=all&region=all&country=all&min_rounds=200&min_rating=1800&agent=all&map_id=all&timespan=all", grouped=True)
+url = "https://www.vlr.gg/stats/?min_rating=1800&agent=all&map_id=all&timespan=all"
+scraper.build(url, ["mwzera", "267.2"])
+data = scraper.get_result_similar(url, grouped=True)
 data = pd.DataFrame(dict([(k, pd.Series(v)) for k,v in data.items()]))
 data = data.rename({data.columns.values[0]:'player', data.columns.values[1]:'ACS'}, axis=1)
-data
-ages = []
+
+ages = [] 
 earnings = []
 for player in data['player'].tolist():
-    if reached == False:
-        if player == 'daps':
-            reached = True
-        continue
     player_url = "https://liquipedia.net/valorant/" + player
     req = requests.get(player_url, headers={'useragent': 'Statistics Project / ethan.yu22@bcp.org)', 'Accept-Encoding': 'gzip'}, timeout=(10, None))
     if req.status_code != 404:
@@ -40,7 +37,6 @@ for player in data['player'].tolist():
             earning = "None"
         else:
             earnings.append(earning)
-
         print(str(len(ages)) + ": " + player + ", " + age + ", " + earning)
     else:
         ages.append(None)
