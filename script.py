@@ -6,7 +6,7 @@ import re
 import time
 
 scraper = AutoScraper()
-url = "https://www.vlr.gg/stats/?min_rating=1800&agent=all&map_id=all&timespan=all"
+url = "https://www.vlr.gg/stats/?event_group_id=all&event_id=all&region=all&country=all&min_rounds=200&min_rating=1800&agent=all&map_id=all&timespan=all"
 scraper.build(url, ["mwzera", "267.2"])
 data = scraper.get_result_similar(url, grouped=True)
 data = pd.DataFrame(dict([(k, pd.Series(v)) for k,v in data.items()]))
