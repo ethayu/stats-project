@@ -5,6 +5,7 @@ import pylab
 
 data = pd.read_csv('data.csv')
 data.dropna(inplace=True)
+
 data = data[data.age != 0]
 data.plot.scatter(x='age', y='ACS')
 m, b = np.polyfit(data.age, data.ACS, 1)
